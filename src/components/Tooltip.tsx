@@ -7,13 +7,14 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  type ColorValue,
 } from 'react-native';
 
-import { TooltipArrowDirections } from '../Enum';
+import type { TooltipArrowDirections } from '../Enum';
 
 interface TooltipProps {
   title: string;
-  content?: string;
+  description?: string;
   position: TooltipArrowDirections;
   onClose?: () => void;
   isVisible: boolean;
@@ -21,6 +22,9 @@ interface TooltipProps {
   hidePointer?: boolean;
   displayActionButton?: boolean;
   onPressActionButton?: () => void;
+  backgroundColor?: ColorValue;
+  contentColor?: ColorValue;
+  actionButtonColor?: ColorValue;
 }
 
 interface PointerPosition {
@@ -46,7 +50,7 @@ const pointerMargin = 4;
 
 const Tooltip = ({
   title,
-  content,
+  description,
   position,
   onClose,
   isVisible,
@@ -54,13 +58,16 @@ const Tooltip = ({
   parentCompDimensions,
   displayActionButton,
   onPressActionButton,
+  backgroundColor,
+  contentColor,
+  actionButtonColor,
 }: TooltipProps) => {
   const [tooltipDimensions, setTooltipDimensions] = useState({
     width: 0,
     height: 0,
   });
   const positionValues: Record<TooltipArrowDirections, Position> = {
-    [TooltipArrowDirections.RIGHT]: {
+    ['RIGHT']: {
       pointerPosition: {
         left: -(pointerSize / 2 - rotatePointerDelta),
         top: 16,
@@ -75,7 +82,7 @@ const Tooltip = ({
         ),
       },
     },
-    [TooltipArrowDirections.LEFT]: {
+    ['LEFT']: {
       pointerPosition: {
         right: -(pointerSize / 2 - rotatePointerDelta),
         top: 16,
@@ -90,7 +97,7 @@ const Tooltip = ({
         ),
       },
     },
-    [TooltipArrowDirections.TOP_LEFT]: {
+    ['TOP_LEFT']: {
       pointerPosition: { right: 16, bottom: -(pointerSize / 2) },
       tooltipPosition: {
         tTop: -(
@@ -101,7 +108,7 @@ const Tooltip = ({
         ),
       },
     },
-    [TooltipArrowDirections.TOP_CENTER]: {
+    ['TOP_CENTER']: {
       pointerPosition: {
         left: tooltipDimensions.width / 2 - pointerSize / 2,
         bottom: -(pointerSize / 2),
@@ -115,7 +122,7 @@ const Tooltip = ({
         ),
       },
     },
-    [TooltipArrowDirections.TOP_RIGHT]: {
+    ['TOP_RIGHT']: {
       pointerPosition: { left: 16, bottom: -(pointerSize / 2) },
       tooltipPosition: {
         tTop: -(
@@ -126,7 +133,7 @@ const Tooltip = ({
         ),
       },
     },
-    [TooltipArrowDirections.BOTTOM_LEFT]: {
+    ['BOTTOM_LEFT']: {
       pointerPosition: { right: 16, top: -(pointerSize / 2) },
       tooltipPosition: {
         tTop:
@@ -136,7 +143,7 @@ const Tooltip = ({
           pointerMargin,
       },
     },
-    [TooltipArrowDirections.BOTTOM_CENTER]: {
+    ['BOTTOM_CENTER']: {
       pointerPosition: {
         left: tooltipDimensions.width / 2 - pointerSize / 2,
         top: -(pointerSize / 2),
@@ -149,7 +156,7 @@ const Tooltip = ({
           pointerMargin,
       },
     },
-    [TooltipArrowDirections.BOTTOM_RIGHT]: {
+    ['BOTTOM_RIGHT']: {
       pointerPosition: { left: 16, top: -(pointerSize / 2) },
       tooltipPosition: {
         tTop:
@@ -162,12 +169,8 @@ const Tooltip = ({
   };
 
   const { pointerPosition, tooltipPosition } = positionValues[position] || {};
-  const onLeft =
-    position === TooltipArrowDirections.BOTTOM_LEFT ||
-    position === TooltipArrowDirections.TOP_LEFT;
-  const onRight =
-    position === TooltipArrowDirections.BOTTOM_RIGHT ||
-    position === TooltipArrowDirections.TOP_RIGHT;
+  const onLeft = position === 'BOTTOM_LEFT' || position === 'TOP_LEFT';
+  const onRight = position === 'BOTTOM_RIGHT' || position === 'TOP_RIGHT';
   const [numberOfLines, setNumberOfLines] = useState(0);
 
   return isVisible ? (
@@ -186,6 +189,7 @@ const Tooltip = ({
           {
             marginLeft: onLeft ? -150 : 'auto',
             marginRight: onRight ? -150 : 'auto',
+            backgroundColor: backgroundColor || '#FFFFFF',
           },
         ]}
         onLayout={(e) => {
@@ -202,7 +206,11 @@ const Tooltip = ({
           ]}
         >
           <Text
-            style={[styles.title, !onClose && { flex: 1, textAlign: 'center' }]}
+            style={[
+              styles.title,
+              !onClose && { flex: 1, textAlign: 'center' },
+              { color: contentColor || '#000000' },
+            ]}
             numberOfLines={2}
             onTextLayout={(e) => setNumberOfLines(e.nativeEvent.lines.length)}
           >
@@ -219,13 +227,14 @@ const Tooltip = ({
                   uri: 'https://icons.veryicon.com/png/o/miscellaneous/medium-thin-linear-icon/cross-23.png',
                 }}
                 style={{ height: 18, width: 18 }}
+                tintColor={contentColor || '#000000'}
               />
             </Pressable>
           )}
         </View>
-        {content && (
-          <Text style={{ color: 'black' }} numberOfLines={2}>
-            {content}
+        {description && (
+          <Text style={{ color: contentColor || '#000000' }} numberOfLines={2}>
+            {description}
           </Text>
         )}
         {displayActionButton && (
@@ -233,7 +242,14 @@ const Tooltip = ({
             style={{ alignSelf: 'flex-end', marginTop: 10 }}
             onPress={onPressActionButton}
           >
-            <Text style={{ color: '#003DB0', fontWeight: 'bold' }}>Action</Text>
+            <Text
+              style={{
+                color: actionButtonColor || '#003DB0',
+                fontWeight: 'bold',
+              }}
+            >
+              Action
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -246,6 +262,7 @@ const Tooltip = ({
               top: pointerPosition.top,
               left: pointerPosition.left,
               right: pointerPosition.right,
+              backgroundColor: backgroundColor || '#FFFFFF',
             },
           ]}
         />
@@ -258,7 +275,6 @@ const Tooltip = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     minWidth: 200,
     maxWidth: 270,
     padding: 12,
@@ -268,11 +284,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: 'black',
     flexShrink: 1,
   },
   pointer: {
-    backgroundColor: 'white',
     height: pointerSize,
     width: pointerSize,
     transform: [{ rotate: '45deg' }],

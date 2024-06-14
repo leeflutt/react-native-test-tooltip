@@ -1,10 +1,9 @@
-export enum TooltipArrowDirections {
-  LEFT = 'LEFT',
-  RIGHT = 'RIGHT',
-  BOTTOM_LEFT = 'BOTTOM_LEFT',
-  BOTTOM_CENTER = 'BOTTOM_CENTER',
-  BOTTOM_RIGHT = 'BOTTOM_RIGHT',
-  TOP_LEFT = 'TOP_LEFT',
-  TOP_CENTER = 'TOP_CENTER',
-  TOP_RIGHT = 'TOP_RIGHT',
-}
+export type TooltipArrowDirections =
+  | 'LEFT'
+  | 'RIGHT'
+  | 'BOTTOM_LEFT'
+  | 'BOTTOM_CENTER'
+  | 'BOTTOM_RIGHT'
+  | 'TOP_LEFT'
+  | 'TOP_CENTER'
+  | 'TOP_RIGHT';

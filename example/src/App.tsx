@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TooltipWrapper from 'react-native-test-tooltip';
-import { TooltipArrowDirections } from '../../src/Enum';
 import { useEffect, useState } from 'react';
 
 export default function App() {
@@ -30,7 +29,7 @@ export default function App() {
         <View>
           <Text style={styles.title}>Démo Flash Tech Tooltips</Text>
           <TooltipWrapper
-            tooltipPosition={TooltipArrowDirections.BOTTOM_RIGHT}
+            tooltipPosition="BOTTOM_RIGHT"
             isTooltipVisible={isSubtitleTPVisible}
             title="Juste comme ça"
             style={{ marginBottom: 200 }}
@@ -43,10 +42,10 @@ export default function App() {
 
         <View style={{ width: '100%', paddingHorizontal: 20 }}>
           <TooltipWrapper
-            tooltipPosition={TooltipArrowDirections.RIGHT}
+            tooltipPosition="RIGHT"
             isTooltipVisible={is1stTooltipVisible}
             title="1er tooltip"
-            content="J'espère que cette démonstration vous plaît, allez mettre des stars sur ma lib"
+            description="J'espère que cette démonstration vous plaît, allez mettre des stars sur ma lib"
             style={{ marginBottom: 40, alignSelf: 'flex-start' }}
             onCloseTooltip={() => setIs1stTooltipVisible(false)}
           >
@@ -59,7 +58,7 @@ export default function App() {
           </TooltipWrapper>
 
           <TooltipWrapper
-            tooltipPosition={TooltipArrowDirections.LEFT}
+            tooltipPosition="LEFT"
             isTooltipVisible={is2ndTooltipVisible}
             title="Bouton d'exemple"
             style={{ marginBottom: 40, alignSelf: 'flex-end' }}
@@ -74,13 +73,16 @@ export default function App() {
           </TooltipWrapper>
 
           <TooltipWrapper
-            tooltipPosition={TooltipArrowDirections.BOTTOM_CENTER}
+            tooltipPosition="BOTTOM_CENTER"
             isTooltipVisible={is3rdTooltipVisible}
             title="3eme tooltip et pas des moindres"
-            content="Ça c'est le tooltip Pro Max, mettez-moi des stars sur GitHub"
+            description="Ça c'est le tooltip Pro Max, mettez-moi des stars sur GitHub"
             style={{ marginBottom: 40, alignSelf: 'center' }}
             onCloseTooltip={() => setIs3rdTooltipVisible(false)}
             displayActionButton
+            backgroundColor={'red'}
+            contentColor={'yellow'}
+            actionButtonColor={'green'}
           >
             <TouchableOpacity
               style={styles.exampleButton}

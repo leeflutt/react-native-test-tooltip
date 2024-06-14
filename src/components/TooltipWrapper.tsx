@@ -1,9 +1,14 @@
 import React, { type ReactNode, useState } from 'react';
 
-import { type StyleProp, View, type ViewStyle } from 'react-native';
+import {
+  type ColorValue,
+  type StyleProp,
+  View,
+  type ViewStyle,
+} from 'react-native';
 
 import Tooltip from './Tooltip';
-import { TooltipArrowDirections } from '../Enum';
+import type { TooltipArrowDirections } from '../Enum';
 
 interface TooltipWrapperProps {
   children: ReactNode;
@@ -12,10 +17,13 @@ interface TooltipWrapperProps {
   isTooltipVisible: boolean;
   onCloseTooltip?: () => void;
   title: string;
-  content?: string;
+  description?: string;
   hidePointer?: boolean;
   displayActionButton?: boolean;
   onPressActionButton?: () => void;
+  backgroundColor?: ColorValue;
+  contentColor?: ColorValue;
+  actionButtonColor?: ColorValue;
 }
 
 const TooltipWrapper = ({
@@ -25,10 +33,13 @@ const TooltipWrapper = ({
   isTooltipVisible,
   onCloseTooltip,
   title,
-  content,
+  description,
   hidePointer,
   displayActionButton,
   onPressActionButton,
+  backgroundColor,
+  contentColor,
+  actionButtonColor,
 }: TooltipWrapperProps) => {
   const [childrenDimension, setChildrenDimension] = useState({
     height: 0,
@@ -48,7 +59,7 @@ const TooltipWrapper = ({
       {children}
       <Tooltip
         title={title}
-        content={content}
+        description={description}
         position={tooltipPosition}
         onClose={onCloseTooltip}
         isVisible={isTooltipVisible}
@@ -56,6 +67,9 @@ const TooltipWrapper = ({
         hidePointer={hidePointer}
         displayActionButton={displayActionButton}
         onPressActionButton={onPressActionButton}
+        backgroundColor={backgroundColor}
+        contentColor={contentColor}
+        actionButtonColor={actionButtonColor}
       />
     </View>
   );
